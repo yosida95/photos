@@ -1,0 +1,22 @@
+{% extends 'layout.jinja2' %}
+
+{% block title %}{{ photo.id}} - Photos{% endblock %}
+{% block og_title %}{{ photo.id}} - Photos{% endblock %}
+{% block og_description %}{{ photo.comment }}{% endblock %}
+{% block ext_head %}
+    <meta name="og:image" content="{{ request.route_url('photo_image', id=photo.id, size='resized', ext=photo.ext) }}" />
+{% endblock %}
+
+
+{% block body %}
+                <div id="photo">
+                    <img src="{{ request.route_path('photo_image', id=photo.id, size='resized', ext=photo.ext) }}" alt="{{ photo.id }}" /><br />
+                    <a href="{{ request.route_path('photo_image', id=photo.id, size='raw', ext=photo.ext) }}">生データ</a>
+                </div>
+                <dl>
+                    <dt>アップロード日時</dt>
+                        <dd>{{ photo.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</dd>
+                    <dt>コメント</dt>
+                        <dd>{{ photo.comment }}</dd>
+                </dl>
+{% endblock %}

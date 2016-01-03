@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<image>
+    <id>{{ photo.id }}</id>
+    <text>{{ photo.comment }}</text>
+    <url>{{ request.route_url('photo_detail', id=photo.id) }}</url>
+    <mediaurl>{{ request.route_url('photo_image', id=photo.id, size='raw', ext=photo.ext) }}</mediaurl>
+    <type>{{ photo.ext }}</type>
+    <timestamp>{{ photo.created_at.strftime('%a, %d %b %Y %H:%M:%S') }} +0900</timestamp>
+    <user>
+        <id>{{ user_id }}</id>
+        <screen_name>{{ user_screen_name }}</screen_name>
+    </user>
+</image>
