@@ -36,6 +36,7 @@ def main(global_config, **settings):
                               reify=True)
 
     config.add_route('photo_list', '/photos')
+    config.add_route('photo_list_slash', '/photos/')
     config.add_route('upload', '/photos/upload.xml')
     config.add_route('photo_image', '/photos/{id}.{size}.{ext}',
                      factory=photo_factory)

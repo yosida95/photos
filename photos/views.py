@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 
 from pyramid.httpexceptions import (
     HTTPForbidden,
+    HTTPMovedPermanently,
     HTTPNotFound,
     HTTPUnauthorized,
 )
@@ -85,6 +86,12 @@ def photo_list(request):
     return dict(photos=photos,
                 current_page=page,
                 last_page=last_page)
+
+
+@view_config(route_name='photo_list_slash',
+             request_method='GET')
+def photo_list_slash(request):
+    raise HTTPMovedPermanently(request.route_url('photo_list'))
 
 
 @view_config(route_name='photo_detail',
