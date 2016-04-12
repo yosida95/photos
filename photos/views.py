@@ -88,8 +88,7 @@ def photo_list(request):
                 last_page=last_page)
 
 
-@view_config(route_name='photo_list_slash',
-             request_method='GET')
+@view_config(route_name='photo_list_slash', request_method='GET')
 def photo_list_slash(request):
     raise HTTPMovedPermanently(request.route_url('photo_list'))
 
@@ -101,18 +100,22 @@ def photo_detail(photo, request):
     return dict(photo=photo)
 
 
-@view_config(route_name='photo_image',
-             request_method='GET')
+@view_config(route_name='photo_image', request_method='GET')
 def photo_image(photo, request):
     size = request.matchdict['size']
-    if size == 'raw':
-        data = photo.get_original(request.registry.photo_storage)
-    elif size == 'resized':
-        data = photo.get_resized(request.registry.photo_storage, (480, 360))
-    elif size == 'thumbnail':
-        data = photo.get_thumb(request.registry.photo_storage, 220)
-    else:
+    if size not in ('raw', 'resized', 'thumbnail'):
         raise HTTPNotFound()
+
+    try:
+        if size == 'raw':
+            data = photo.get_original(request.registry.photo_storage)
+        elif size == 'resized':
+            resize_to = (480, 360)
+            data = photo.get_resized(request.registry.photo_storage, resize_to)
+        else:  # thumbnail
+            data = photo.get_thumb(request.registry.photo_storage, 220)
+    except KeyError as why:
+        raise HTTPNotFound() from why
 
     return Response(data, content_type=photo.mime_type)
 
