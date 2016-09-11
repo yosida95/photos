@@ -1,22 +1,51 @@
+{#- vim:set filetype=htmljinja shiftwidth=2: -#}
 {% extends 'layout.jinja2' %}
 
-{% block title %}{{ photo.id}} - Photos{% endblock %}
-{% block og_title %}{{ photo.id}} - Photos{% endblock %}
-{% block og_description %}{{ photo.comment }}{% endblock %}
-{% block ext_head %}
-    <meta name="og:image" content="{{ request.route_url('photo_image', id=photo.id, size='resized', ext=photo.ext) }}" />
-{% endblock %}
+{% block title -%}
+  {%- if photo.comment -%}
+    &quot;{{ photo.comment|striptags|e|truncate(20) }}&quot;
+  {%- else -%}
+    {{ photo.id }}
+  {%- endif -%}
+{%- endblock %}
 
+{% block description -%}
+  {%- if photo.comment -%}
+    &quot;{{ photo.comment|striptags|e }}&quot;
+  {%- else -%}
+    {{ photo.id }}
+  {%- endif -%}
+{%- endblock %}
 
-{% block body %}
-                <div id="photo">
-                    <img src="{{ request.route_path('photo_image', id=photo.id, size='resized', ext=photo.ext) }}" alt="{{ photo.id }}" /><br />
-                    <a href="{{ request.route_path('photo_image', id=photo.id, size='raw', ext=photo.ext) }}">生データ</a>
-                </div>
-                <dl>
-                    <dt>アップロード日時</dt>
-                        <dd>{{ photo.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</dd>
-                    <dt>コメント</dt>
-                        <dd>{{ photo.comment }}</dd>
-                </dl>
-{% endblock %}
+{% block ext_meta %}
+    <meta name="og:image" content="{{ request.route_url('photo_image', id=photo.id, size='resized', ext=photo.ext) }}">
+{%- endblock %}
+
+{% block content %}
+          <div class="content">
+            <div class="gallery clearfix">
+              <a href="{{ request.route_path('photo_image', id=photo.id, size='raw', ext=photo.ext)}}">
+                <img src="{{ request.route_path('photo_image', id=photo.id, size='resized', ext=photo.ext) }}"
+                     alt="{{ photo.id }}">
+              </a>
+            </div>
+            <p class="post-meta">
+              posted on <strong>{{ photo.created_at.strftime('%I:%M:%S %p - %b %d, %Y UTC') }}</strong>
+            </p>
+            {%- if photo.comment %}
+            <p>{{ photo.comment }}</p>
+            {%- endif %}
+          </div><!-- .content End -->
+          <div class="sidebar">
+            <div class="sidebar_item">
+              <h5>yosida95</h5>
+              <div id="author-bio">
+                <p style="text-align: center"><img src="../../../_static/img/icon_200x200.png" width="160"></p>
+                <p><a href="../../../pages/about.html">著者について / About yosida95</a></p>
+                <p>ここで述べる内容は私個人の見解に基づくものであり、私の雇用者や私が所属する団体とは一切の関係がありません。</p>
+              </div>
+              <p><a class="twitter-follow-button" data-show-count="false" href="https://twitter.com/yosida95">Follow @yosida95</a></p>
+            </div>
+          </div><!-- .sidebar End -->
+          <div class="clear"></div>
+{%- endblock %}

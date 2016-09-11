@@ -82,7 +82,6 @@ def photo_list(request):
     ).offset(
         (page - 1) * 9
     ).all()
-    photos = [photos[x:x+3] for x in range(0, len(photos), 3)]
     return dict(photos=photos,
                 current_page=page,
                 last_page=last_page)
