@@ -10,8 +10,8 @@
             <li>
               <div class="item-image">
                 <div class="gallery clearfix" >
-                  <a href="{{ request.route_url('photo_detail', id=photo.id) }}">
-                    <img src="{{ request.route_url('photo_image', id=photo.id, size='thumbnail', ext=photo.ext) }}"
+                  <a href="{{ request.route_path('photo_detail', id=photo.id) }}">
+                    <img src="{{ request.route_path('photo_image', id=photo.id, size='thumbnail', ext=photo.ext) }}"
                          alt="{{ photo.id }}">
                   </a>
                 </div>
@@ -25,10 +25,10 @@
 
           <div class="pagination">
             {%- if current_page > 1 %}
-            <a href="{{ request.route_url('photo_list', _query=(('page', current_page - 1), )) }}" class="newer-posts">&laquo; Newer</a>
+            <a href="{{ request.route_path('photo_list', _query=(('page', current_page - 1), )) }}" class="newer-posts">&laquo; Newer</a>
             {%- endif %}
             {%- if current_page < last_page %}
-            <a href="{{ request.route_url('photo_list', _query=(('page', current_page + 1), )) }}" class="older-posts">Older &raquo;</a>
+            <a href="{{ request.route_path('photo_list', _query=(('page', current_page + 1), )) }}" class="older-posts">Older &raquo;</a>
             {%- endif %}
           </div>
 {%- endblock %}
